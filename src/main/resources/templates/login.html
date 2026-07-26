@@ -1,0 +1,73 @@
+
+
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Iniciar sesion — Rappi Clon (U1)</title>
+
+
+	<link rel="stylesheet" th:href="@{/css/base.css}" />
+	<link rel="stylesheet" th:href="@{/css/app.css}" />
+</head>
+<body>
+
+	<div class="card-centrada">
+
+		<h1>Iniciar sesion</h1>
+		<p class="subtitulo">Rappi Clon — Unidad 1 (Spring Security)</p>
+
+
+		<div class="mensaje-error" th:if="${param.error != null}">
+			Usuario o contrasena incorrectos. Intentalo de nuevo.
+		</div>
+
+
+		<div class="mensaje-exito" th:if="${param.logout != null}">
+			Has cerrado sesion correctamente.
+		</div>
+
+
+		<form th:action="@{/login}" method="post">
+
+			<input type="hidden"
+			       th:name="${_csrf.parameterName}"
+			       th:value="${_csrf.token}" />
+
+			<div class="grupo-campo">
+				<label for="username">Usuario</label>
+				<input type="text"
+				       id="username"
+				       name="username"
+				       placeholder="admin o user"
+				       required
+				       autofocus />
+			</div>
+
+			<div class="grupo-campo">
+				<label for="password">Contrasena</label>
+				<input type="password"
+				       id="password"
+				       name="password"
+				       placeholder="••••••••"
+				       required />
+			</div>
+
+			<button type="submit" class="boton boton-primario">
+				Entrar
+			</button>
+
+
+		</form>
+
+		<p class="nota-ayuda">
+			<strong>Credenciales de prueba (U1):</strong><br>
+			admin / admin123 &bull; user / user123
+		</p>
+
+	</div>
+
+</body>
+</html>

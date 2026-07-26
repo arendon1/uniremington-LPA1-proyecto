@@ -1,0 +1,89 @@
+# =========================================
+# Proyecto Spring - LPA 1
+# Stack: Java 21 / Spring Boot 4 / Maven / libsql
+# Frontend: Svelte 5 + Vite + TypeScript + UnoCSS
+# =========================================
+
+# --- Java / Maven / Spring Boot ---
+HELP.md
+target/
+build/
+out/
+.mvn/wrapper/maven-wrapper.jar
+*.class
+*.jar
+*.war
+*.ear
+*.log
+hs_err_pid*
+replay_pid*
+
+# Spring Boot
+spring-boot-devtools.properties
+
+# --- IDEs ---
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.project
+.classpath
+.settings/
+nbproject/
+nb-configuration.xml
+
+# --- OS / Misc ---
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# --- Frontend (Svelte 5 + Vite) ---
+node_modules/
+dist/
+build/
+.svelte-kit/
+.vite/
+.cache/
+coverage/
+*.local
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- DB local libsql / secrets ---
+data/
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.db
+application-local.properties
+application-local.yml
+secrets/
+
+# --- Password reset logs (offline) ---
+reset-links.log
+
+# --- Node / npm (tooling local, no se publica) ---
+package.json
+package-lock.json
+
+# --- Documentación local (no se publica) ---
+# Todo docs/ es material local: diagramas, análisis de arquitectura, knowledge
+# base de referencias y entregables del curso (borradores de video,
+# respuestas a foros, notas de exámenes, links de repo antes de hacer público).
+# El repo público se reduce a código + PRD + README.
+docs/
+
+# --- Artefactos internos de desarrollo (no se publican) ---
+AGENTS.md
+.planes/

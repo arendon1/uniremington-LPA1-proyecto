@@ -1,0 +1,104 @@
+
+
+<!DOCTYPE html>
+<html lang="es" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title th:text="${titulo != null ? titulo + ' — Rappi Clon (U1)' : 'Ruta — Rappi Clon (U1)'}">Ruta — Rappi Clon (U1)</title>
+
+	<link rel="stylesheet" th:href="@{/css/base.css}" />
+	<link rel="stylesheet" th:href="@{/css/app.css}" />
+</head>
+
+<body class="pagina-flujo">
+
+	<div class="contenedor-principal">
+
+		<header class="encabezado-app">
+			<div>
+				<h1>Rappi Clon</h1>
+
+				<div class="info-usuario" th:text="${subtitulo != null ? subtitulo : '/ruta'}">/ruta</div>
+			</div>
+
+			<div class="header-auth">
+
+				<div class="info-auth" sec:authorize="isAuthenticated()">
+					Sesion: <strong th:text="${#authentication.name}">usuario</strong>
+				</div>
+
+				<a href="/" class="boton boton-solo">← Inicio</a>
+			</div>
+		</header>
+
+
+		<main class="tarjeta tarjeta-destacada">
+			<h2 th:text="${titulo != null ? titulo : 'Ruta'}">Titulo de la ruta</h2>
+			<p class="descripcion-ruta" th:text="${descripcion != null ? descripcion : ''}">
+				Descripcion de la ruta.
+			</p>
+
+
+			<div class="info-extra info-acento" th:if="${infoUsuario != null}">
+				<h3>Tu sesion</h3>
+				<p>
+					Hola, <strong th:text="${infoUsuario}">usuario</strong>.
+					Esta sesion esta activa y tiene los permisos necesarios
+					para ver esta pagina.
+				</p>
+			</div>
+
+			<div class="info-extra" th:unless="${infoUsuario != null}">
+				<h3>Sesion anonima</h3>
+				<p>
+					Estas navegando como visitante. Para acceder a
+					funciones personalizadas, <a href="/login">inicia sesion</a>.
+				</p>
+			</div>
+		</main>
+
+
+		<section class="seccion-navegacion">
+			<h3>Otras rutas</h3>
+			<div class="rutas-grid">
+
+				<a href="/public" class="tarjeta">
+					<h2>Pagina publica</h2>
+					<div class="ruta">/public</div>
+					<div class="descripcion">
+						Endpoint de demostracion sin auth.
+					</div>
+					<span class="badge-tarjeta badge-publico">Publico</span>
+				</a>
+
+				<a href="/user" class="tarjeta">
+					<h2>Zona de usuario</h2>
+					<div class="ruta">/user</div>
+					<div class="descripcion">
+						USER o ADMIN. Muestra info del usuario.
+					</div>
+					<span class="badge-tarjeta badge-user">USER o ADMIN</span>
+				</a>
+
+				<a href="/admin" class="tarjeta">
+					<h2>Panel admin</h2>
+					<div class="ruta">/admin</div>
+					<div class="descripcion">
+						Solo ADMIN.
+					</div>
+					<span class="badge-tarjeta badge-admin">Solo ADMIN</span>
+				</a>
+
+			</div>
+		</section>
+
+		<footer class="pie">
+			Rappi Clon &mdash; LPA 1 (2607B04G1) &mdash; 2026-2
+		</footer>
+
+	</div>
+
+</body>
+</html>
