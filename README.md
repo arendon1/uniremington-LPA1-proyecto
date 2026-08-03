@@ -2,25 +2,48 @@
 
 App web del curso Lenguaje de Programación Avanzado I (Uniremington, 2026-2).
 Dominio: catálogo de productos y pedidos, estilo e-commerce. El proyecto crece
-unidad por unidad. Esta entrega corresponde a la Unidad 1: seguridad con
-Spring Security.
+unidad por unidad. Esta entrega corresponde a la Unidad 2: internacionalización
+en español, inglés y portugués, sobre la app de la Unidad 1 (seguridad con
+Spring Security).
 
 ## Qué hace
 
-Login por formulario sobre Spring Boot. Dos usuarios de prueba en memoria:
+La app se muestra en tres idiomas. En la cabecera hay tres botones, `ES`, `EN`
+y `PT`, y cada uno recarga la página en ese idioma. El cambio se aplica a todas
+las páginas: la tienda, mi cuenta, el panel de administración, el login y la
+página de acceso denegado. El idioma elegido se guarda en una cookie y se
+mantiene incluso después de cerrar sesión.
 
-- `admin` / `admin123` (rol `ADMIN`)
-- `user` / `user123` (rol `USER`)
+El catálogo tiene 10 platos (bandeja paisa, sushi, hamburguesa, pizza, arepa,
+tacos, pollo, poke, pasta y sándwich cubano). Cada plato tiene foto, nombre,
+descripción y precio, todo traducido según el idioma. Los precios se muestran
+en pesos colombianos con el separador de miles de cada idioma.
 
-Tres rutas protegidas por rol:
+De la Unidad 1 se conserva todo: login por formulario, dos usuarios en memoria
+(`admin` / `admin123` con rol `ADMIN`, `user` / `user123` con rol `USER`),
+rutas protegidas por rol (`/public`, `/user`, `/admin`), CSRF y la página
+propia de acceso denegado.
 
-- `/public` abre sin login.
-- `/user` pide `USER` o `ADMIN`.
-- `/admin` solo `ADMIN`.
+## Cambios respecto a la entrega anterior (Tarea 01)
 
-Hay además `/login` (formulario Thymeleaf con CSRF), `/access-denied` (página
-propia de denegación en lugar del 403 del contenedor) y `/` (landing con
-tarjetas de navegación y botón de logout).
+La Tarea 01 entregó la seguridad. La Tarea 02 le suma:
+
+- **Tres idiomas con botones.** Un botón por idioma en la cabecera, en todas
+  las páginas.
+- **Archivos de mensajes por idioma.** Cada texto vive en `messages_es.properties`,
+  `messages_en.properties` o `messages_pt.properties`, y un archivo por defecto
+  (`messages.properties`) con todas las claves en inglés.
+- **El idioma se recuerda.** Se guarda en una cookie de 30 días y sobrevive al
+  logout. No se pierde al cerrar sesión.
+- **Catálogo de 10 platos.** La tienda ahora muestra productos con foto,
+  descripción y precio, en lugar de tarjetas de navegación.
+- **Precios localizados.** El separador de miles cambia según el idioma
+  (1.200 en español, 1,200 en inglés).
+- **Cinco vistas localizadas.** Tienda, mi cuenta, panel, login y acceso
+  denegado.
+
+Lo que no cambió: el login, los roles, el CSRF y el deny-by-default de la
+Unidad 1 siguen intactos.
 
 ## Stack
 
@@ -52,8 +75,11 @@ el proyecto incorpore persistencia se migrará a BCrypt.
 ./mvnw test
 ```
 
-`PruebasSeguridadTest` cubre con MockMvc la matriz completa de permisos (3
-rutas por 3 estados: anónimo, `USER`, `ADMIN`), más login, logout y denegación.
+Son 32 casos con MockMvc, todos en verde: 22 de seguridad, 9 de
+internacionalización y 1 de contexto. Los de seguridad cubren la matriz de
+permisos (3 rutas por 3 estados), login, logout y denegación. Los de i18n
+recorren las rutas públicas en los tres idiomas, verifican que no quede
+ninguna clave sin traducir y que el idioma persista tras el logout.
 
 ## Estructura
 
@@ -61,14 +87,23 @@ rutas por 3 estados: anónimo, `USER`, `ADMIN`), más login, logout y denegació
 src/main/java/one/austral/lpa1/
   RappiClonApplication.java            entrada
   config/ConfiguracionSeguridad.java   SecurityFilterChain, reglas, login, logout
+  config/ConfiguracionMvc.java         LocaleResolver + interceptor de idioma
+  config/ContextoWeb.java              ruta actual en las vistas
   security/ProveedorUsuariosEnMemoria.java   usuarios en memoria
   controller/ControladorPrincipal.java endpoints
+  model/Producto.java                  modelo del catálogo
+  service/Catalogo.java                los 10 platos
+  util/FormateadorPrecios.java         precios según el idioma
 src/main/resources/
-  application.properties
-  templates/                           login, access-denied, index, ruta
+  application.properties               incluye claves spring.messages.*
+  messages*.properties                 bundles de idiomas (es, en, pt + default)
+  templates/                           index, cuenta, panel, login, access-denied
+  templates/fragments/                 cabecera, pie, switcher, producto
   static/css/                          base.css, app.css
+  static/images/productos/             foto de cada plato
 src/test/java/one/austral/lpa1/
-  PruebasSeguridadTest.java            MockMvc
+  PruebasSeguridadTest.java            MockMvc, matriz de permisos
+  PruebasI18nTest.java                 MockMvc, idiomas y persistencia
 ```
 
 Los paquetes van en inglés (`controller`, `config`, `security`) siguiendo la
@@ -77,7 +112,4 @@ español, que es el idioma del curso y del revisor.
 
 ## Documentación
 
-- [PRD.md](./PRD.md) descripción del proyecto y de lo construido en U1.
-- [docs/arquitectura-explicada.md](./docs/arquitectura-explicada.md) visión de
-  la arquitectura.
-- [docs/diagrams/](./docs/diagrams/) diagramas del sistema.
+- [PRD.md](./PRD.md) descripción del proyecto y de lo construido en U1 y U2.

@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div class="switcher" th:fragment="switcher(target)" role="group" th:attr="aria-label=#{lang.titulo}">
+		<a th:href="@{__${target}__(lang=es)}" th:classappend="${#locale.language == 'es'} ? 'activa' : ''" th:text="#{lang.es}">ES</a>
+		<a th:href="@{__${target}__(lang=en)}" th:classappend="${#locale.language == 'en'} ? 'activa' : ''" th:text="#{lang.en}">EN</a>
+		<a th:href="@{__${target}__(lang=pt)}" th:classappend="${#locale.language == 'pt'} ? 'activa' : ''" th:text="#{lang.pt}">PT</a>
+	</div>
+</body>
+</html>

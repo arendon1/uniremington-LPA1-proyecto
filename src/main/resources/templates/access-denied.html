@@ -1,37 +1,30 @@
-
-
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Acceso denegado — Rappi Clon (U1)</title>
-
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title th:text="#{app.marca} + ' · ' + #{denied.titulo}">Acceso denegado</title>
 	<link rel="stylesheet" th:href="@{/css/base.css}" />
 	<link rel="stylesheet" th:href="@{/css/app.css}" />
 </head>
 <body>
+	<div class="pantalla-centrada">
+		<div class="denied-card">
+			<div th:replace="~{fragments/switcher :: switcher(target='/access-denied')}"></div>
 
-	<div class="card-centrada card-ancha">
+			<svg class="denied-glyph" viewBox="0 0 24 24" fill="none" stroke="#c8442e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+				<path d="M7 11V7a5 5 0 0 1 10 0v4" />
+			</svg>
 
-		<div class="icono-error" aria-hidden="true">&#9940;</div>
+			<h1 th:text="#{denied.titulo}">Acceso restringido</h1>
+			<p class="subtitulo" th:text="#{denied.mensaje}">Esta zona es solo para administradores.</p>
 
-		<h1>Acceso denegado</h1>
-		<p class="subtitulo">
-			No tienes permiso para acceder a esta pagina.
-			Si crees que es un error, contacta al administrador.
-		</p>
-
-
-		<div class="acciones">
-			<a href="/" class="boton boton-primario">Volver al inicio</a>
-			<a href="/login" class="boton boton-secundario">Iniciar sesion con otra cuenta</a>
+			<div class="denied-acciones">
+				<a th:href="@{/}" class="boton boton-primario" th:text="#{denied.cta.tienda}">Ir a la tienda</a>
+				<a th:href="@{/login}" class="boton boton-fantasma" th:text="#{denied.cta.cambiar}">Entrar con otra cuenta</a>
+			</div>
 		</div>
-
-		<div class="nota-ayuda">
-		</div>
-
 	</div>
-
 </body>
 </html>

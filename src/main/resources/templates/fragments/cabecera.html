@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+	<header class="cabecera" th:fragment="cabecera">
+		<div class="cabecera-interior">
+			<a th:href="@{/}" class="marca">
+				<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M3 11h18l-1.5 9a2 2 0 0 1-2 1.7H6.5a2 2 0 0 1-2-1.7Z" />
+					<path d="M5 11V8a7 7 0 0 1 14 0v3" />
+					<path d="M9 15v2M15 15v2" />
+				</svg>
+				<span th:text="#{app.marca}">RappiClon</span>
+			</a>
+			<nav class="navegacion">
+				<a th:href="@{/user}" sec:authorize="isAuthenticated()" th:text="#{nav.cuenta}">Mi cuenta</a>
+				<a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')" th:text="#{nav.panel}">Panel</a>
+			</nav>
+			<div class="cabecera-acciones">
+				<div th:replace="~{fragments/switcher :: switcher(target=${rutaActual})}"></div>
+				<span class="auth-usuario" sec:authorize="isAnonymous()">
+					<a th:href="@{/login}" class="boton-login-cabecera" th:text="#{nav.login}">Iniciar sesion</a>
+				</span>
+				<span class="auth-usuario" sec:authorize="isAuthenticated()">
+					<span class="auth-info">
+						<span th:text="#{nav.sesion}">Sesion:</span>
+						<strong sec:authentication="name">usuario</strong>
+					</span>
+					<form th:action="@{/logout}" method="post">
+						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+						<button type="submit" class="boton-logout-cabecera" th:text="#{nav.logout}">Cerrar sesion</button>
+					</form>
+				</span>
+			</div>
+		</div>
+	</header>
+</body>
+</html>

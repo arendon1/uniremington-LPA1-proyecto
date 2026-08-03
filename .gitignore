@@ -73,17 +73,25 @@ secrets/
 # --- Password reset logs (offline) ---
 reset-links.log
 
+# --- Videos y binarios grandes del material de entregables ---
+# Los videos subidos a YouTube no van al repo (binario grande, ~500MB).
+# Los archivos de Affinity Designer (.af) y los backups (.bak-prefill)
+# son metadata de editor que tampoco se versiona.
+*.mp4
+*.af
+*.bak-prefill
+
 # --- Node / npm (tooling local, no se publica) ---
 package.json
 package-lock.json
 
-# --- Documentación local (no se publica) ---
-# Todo docs/ es material local: diagramas, análisis de arquitectura, knowledge
-# base de referencias y entregables del curso (borradores de video,
-# respuestas a foros, notas de exámenes, links de repo antes de hacer público).
-# El repo público se reduce a código + PRD + README.
-docs/
-
-# --- Artefactos internos de desarrollo (no se publican) ---
-AGENTS.md
+# --- Material local del agente (NO se commitea) ---
+# Razón: estos directorios son artefactos del agente. El repo público se
+# manufactura con un shadow repo (ver docs/entregables/PUBLICACION-REPO.md).
+# `docs/entregables/` ya no se ignora: el shadow repo filtra el contenido
+# antes de publicar (regla "shadow repo").
 .planes/
+.agents/
+.pi/
+skills-lock.json
+AGENTS.md

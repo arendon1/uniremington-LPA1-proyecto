@@ -1,90 +1,56 @@
-
-
 <!DOCTYPE html>
-
-<html lang="es" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Rappi Clon — Catalogo y pedidos (U1)</title>
-
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title th:text="#{app.marca} + ' · ' + #{tienda.hero.titulo}">RappiClon</title>
 	<link rel="stylesheet" th:href="@{/css/base.css}" />
 	<link rel="stylesheet" th:href="@{/css/app.css}" />
 </head>
+<body>
+	<div th:replace="~{fragments/cabecera :: cabecera}"></div>
 
-<body class="pagina-flujo">
-
-	<div class="contenedor-principal">
-
-
-		<header class="encabezado-app">
-			<div>
-				<h1>Rappi Clon</h1>
-				<div class="info-usuario">Unidad 1 — Spring Security 7.1</div>
+	<section class="hero">
+		<div class="hero-interior">
+			<h1 th:text="#{tienda.hero.titulo}">Comida a tu puerta en minutos</h1>
+			<p class="tagline" th:text="#{tienda.hero.subtitulo}">Desde tu restaurante favorito hasta tu casa.</p>
+			<div class="hero-acciones">
+				<a sec:authorize="isAnonymous()" th:href="@{/login}" class="boton boton-primario boton-cta-login" th:text="#{tienda.cta.login}">Inicia sesion para pedir</a>
+				<a sec:authorize="isAuthenticated()" th:href="@{/user}" class="boton boton-primario boton-cta-pedir" th:text="#{tienda.cta.pedir}">Hacer pedido</a>
+				<a href="#populares" class="boton boton-linea boton-cta-explorar" th:text="#{tienda.populares.titulo}">Lo mas pedido</a>
 			</div>
-
-			<div class="header-auth" sec:authorize="isAnonymous()">
-				<a href="/login" class="boton boton-primario">Iniciar sesion</a>
-			</div>
-
-			<div class="header-auth" sec:authorize="isAuthenticated()">
-				<div class="info-auth">
-					Sesion: <strong th:text="${#authentication.name}">usuario</strong>
-				</div>
-				<form class="logout-inline" th:action="@{/logout}" method="post">
-					<input type="hidden"
-					       th:name="${_csrf.parameterName}"
-					       th:value="${_csrf.token}" />
-					<button type="submit" class="boton boton-solo">Cerrar sesion</button>
-				</form>
-			</div>
-		</header>
-
-		<section class="hero">
-			<h1>Explora la app</h1>
-			<p class="tagline">Tres rutas con distintos niveles de acceso</p>
-		</section>
-
-
-		<div class="rutas-grid">
-
-			<a href="/public" class="tarjeta">
-				<h2>Pagina publica</h2>
-				<div class="ruta">/public</div>
-				<div class="descripcion">
-					Endpoint de demostracion accesible sin autenticacion.
-					Util para probar el deny-by-default de Security.
-				</div>
-				<span class="badge-tarjeta badge-publico">Publico</span>
-			</a>
-
-			<a href="/user" class="tarjeta">
-				<h2>Zona de usuario</h2>
-				<div class="ruta">/user</div>
-				<div class="descripcion">
-					Visible para usuarios con rol USER o ADMIN. Muestra
-					el nombre del usuario autenticado.
-				</div>
-				<span class="badge-tarjeta badge-user">USER o ADMIN</span>
-			</a>
-
-			<a href="/admin" class="tarjeta">
-				<h2>Panel de administracion</h2>
-				<div class="ruta">/admin</div>
-				<div class="descripcion">
-					Solo para administradores. Un USER que intente entrar
-					acabara en la pagina de acceso denegado.
-				</div>
-				<span class="badge-tarjeta badge-admin">Solo ADMIN</span>
-			</a>
-
 		</div>
+	</section>
 
-		<footer class="pie">
-			Rappi Clon &mdash; LPA 1 (2607B04G1) &mdash; 2026-2
-		</footer>
+	<section class="seccion" id="populares">
+		<div class="seccion-encabezado">
+			<h2 th:text="#{tienda.populares.titulo}">Lo mas pedido</h2>
+		</div>
+		<div class="reja-productos">
+			<th:block th:each="p : ${productos}">
+				<article class="producto">
+					<div class="producto-icono">
+						<picture>
+							<source th:srcset="@{'/images/productos/' + ${p.slug} + '.webp'}" type="image/webp" />
+							<img th:src="@{'/images/productos/' + ${p.slug} + '.jpg'}" th:alt="#{|producto.${p.slug}.nombre|}" loading="lazy" />
+						</picture>
+					</div>
+					<h3 class="producto-nombre" th:text="#{|producto.${p.slug}.nombre|}">Nombre</h3>
+					<p class="producto-desc" th:text="#{|producto.${p.slug}.desc|}">Descripcion</p>
+					<div class="producto-meta">
+						<span class="meta-item"><span class="estrella">★</span> 4.8</span>
+						<span class="meta-item" th:text="#{tienda.producto.eta}">25-40 min</span>
+					</div>
+					<div class="producto-precio-fila">
+						<span class="producto-precio" th:text="${@precios.formatear(p.precioCop, #locale)}">COP 28.000</span>
+						<span class="producto-unidad" th:text="#{|producto.unidad.${p.unidad}|}">porcion</span>
+					</div>
+					<button type="button" class="boton boton-primario producto-agregar" th:text="#{tienda.producto.agregar}">Agregar</button>
+				</article>
+			</th:block>
+		</div>
+	</section>
 
-	</div>
-
+	<div th:replace="~{fragments/pie :: pie}"></div>
 </body>
 </html>

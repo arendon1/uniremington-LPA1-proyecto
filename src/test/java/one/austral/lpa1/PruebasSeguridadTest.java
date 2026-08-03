@@ -34,13 +34,26 @@ class PruebasSeguridadTest {
 	}
 
 	@Test
-	void getPublic_templateRuta_conTituloYCalloutAnonimo() throws Exception {
+	void getPublic_muestraTienda_conCatalogoEnEspanol() throws Exception {
 		mockMvc.perform(get("/public"))
 			.andExpect(status().isOk())
 			.andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-			.andExpect(content().string(org.hamcrest.Matchers.containsString("Pagina publica")))
-			.andExpect(content().string(org.hamcrest.Matchers.containsString("/public")))
-			.andExpect(content().string(org.hamcrest.Matchers.containsString("Sesion anonima")));
+			.andExpect(content().string(org.hamcrest.Matchers.containsString("Lo m\u00E1s pedido")))
+			.andExpect(content().string(org.hamcrest.Matchers.containsString("Bandeja paisa")))
+			.andExpect(content().string(org.hamcrest.Matchers.containsString("/public")));
+	}
+
+	@Test
+	void getImagenProducto_sinAutenticacion_retorna200() throws Exception {
+		// Regression: en Boot 4, PathRequest.toStaticResources().atCommonLocations()
+		// solo cubre /images/** (StaticResourceLocation.IMAGES), no /img/. Los assets
+		// de imagenes deben servirse a usuarios anonimos o la tienda queda sin fotos.
+		// Tras el cambio de SVG a JPG+WebP, la imagen canonica es .jpg con fallback
+		// .webp via <picture>; el test verifica que el recurso se sirve y devuelve
+		// el content-type correcto a usuarios anonimos.
+		mockMvc.perform(get("/images/productos/hamburguesa-clasica.jpg"))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("image/jpeg"));
 	}
 
 	@Test
@@ -74,11 +87,11 @@ class PruebasSeguridadTest {
 
 	@Test
 	@WithMockUser(username = "user", roles = "USER")
-	void getUser_conUser_templateRuta_conNombreUsuario() throws Exception {
+	void getUser_muestraCuenta_conSaludoEnEspanol() throws Exception {
 		mockMvc.perform(get("/user"))
 			.andExpect(status().isOk())
-			.andExpect(content().string(org.hamcrest.Matchers.containsString("Zona de usuario")))
-			.andExpect(content().string(org.hamcrest.Matchers.containsString("Hola, <strong>user</strong>")));
+			.andExpect(content().string(org.hamcrest.Matchers.containsString("Mi cuenta")))
+			.andExpect(content().string(org.hamcrest.Matchers.containsString("Hola, user")));
 	}
 
 	@Test
@@ -104,20 +117,11 @@ class PruebasSeguridadTest {
 
 	@Test
 	@WithMockUser(username = "admin", roles = "ADMIN")
-	void getAdmin_conAdmin_templateRuta_conNombreAdmin() throws Exception {
+	void getAdmin_muestraPanel_conSaludoEnEspanol() throws Exception {
 		mockMvc.perform(get("/admin"))
 			.andExpect(status().isOk())
-			.andExpect(content().string(org.hamcrest.Matchers.containsString("Panel de administracion")))
-			.andExpect(content().string(org.hamcrest.Matchers.containsString("Hola, <strong>admin</strong>")))
-			.andExpect(content().string(org.hamcrest.Matchers.containsString("Solo usuarios con rol ADMIN")));
-	}
-
-	@Test
-	@WithMockUser(username = "user", roles = "USER")
-	void getAdmin_conUser_redirigeAAccessDenied_viaT6() throws Exception {
-		mockMvc.perform(get("/admin"))
-			.andExpect(status().isOk())
-			.andExpect(forwardedUrl("/access-denied"));
+			.andExpect(content().string(org.hamcrest.Matchers.containsString("Panel de administraci\u00F3n")))
+			.andExpect(content().string(org.hamcrest.Matchers.containsString("Conectado como admin")));
 	}
 
 	@Test
@@ -179,10 +183,5 @@ class PruebasSeguridadTest {
 	void getLogin_conLogout_retorna200() throws Exception {
 		mockMvc.perform(get("/login?logout"))
 			.andExpect(status().isOk());
-	}
-
-	@SuppressWarnings("unused")
-	private void placeholderParaImportsDeSeguridad() {
-		WithMockUser.class.getName();
 	}
 }

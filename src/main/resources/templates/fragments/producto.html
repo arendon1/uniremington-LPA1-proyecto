@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<article class="producto" th:fragment="producto(producto)">
+		<div class="producto-icono">
+			<picture>
+				<source th:srcset="@{'/images/productos/' + ${producto.slug} + '.webp'}" type="image/webp" />
+				<img th:src="@{'/images/productos/' + ${producto.slug} + '.jpg'}" th:alt="#{|producto.${producto.slug}.nombre|}" loading="lazy" />
+			</picture>
+		</div>
+		<h3 class="producto-nombre" th:text="#{|producto.${producto.slug}.nombre|}">Nombre</h3>
+		<p class="producto-desc" th:text="#{|producto.${producto.slug}.desc|}">Descripcion</p>
+		<div class="producto-meta">
+			<span class="meta-item"><span class="estrella">★</span> 4.8</span>
+			<span class="meta-item" th:text="#{tienda.producto.eta}">25-40 min</span>
+		</div>
+		<div class="producto-precio-fila">
+			<span class="producto-precio" th:text="${@precios.formatear(producto.precioCop, #locale)}">COP 28.000</span>
+			<span class="producto-unidad" th:text="#{|producto.unidad.${producto.unidad}|}">porcion</span>
+		</div>
+		<button type="button" class="boton boton-primario producto-agregar" th:text="#{tienda.producto.agregar}">Agregar</button>
+	</article>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title th:text="#{app.marca} + ' · ' + #{panel.titulo}">Panel</title>
+	<link rel="stylesheet" th:href="@{/css/base.css}" />
+	<link rel="stylesheet" th:href="@{/css/app.css}" />
+</head>
+<body>
+	<div th:replace="~{fragments/cabecera :: cabecera}"></div>
+
+	<main class="panel">
+		<div class="panel-saludo" th:text="#{panel.saludo(${nombre})}">Conectado como admin</div>
+
+		<div class="panel-grid">
+			<div class="panel-tabla">
+				<h2 th:text="#{panel.inventario.titulo}">Inventario</h2>
+				<table>
+					<thead>
+						<tr>
+							<th th:text="#{panel.inventario.columna.nombre}">Producto</th>
+							<th th:text="#{panel.inventario.columna.precio}">Precio</th>
+							<th th:text="#{panel.inventario.columna.stock}">Existencias</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="p : ${productos}">
+							<td class="producto-celda" th:text="#{|producto.${p.slug}.nombre|}">Nombre</td>
+							<td class="precio" th:text="${@precios.formatear(p.precioCop, #locale)}">COP 4.500</td>
+							<td class="stock" th:text="${p.stock}">40</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<aside class="metricas">
+				<h2 th:text="#{panel.metricas.titulo}">Metricas</h2>
+				<div class="metrica-numero" th:text="#{panel.productos.total(${total})}">10 productos en catalogo</div>
+			</aside>
+		</div>
+	</main>
+
+	<div th:replace="~{fragments/pie :: pie}"></div>
+</body>
+</html>

@@ -1,57 +1,68 @@
-
-
+/*
+ * RappiClon — tokens del mundo visual
+ * Direccion: food-delivery (Uber Eats / Didi Food / DoorDash). Header grafito
+ * urbano, fondo claro, rojo SEMANTICO (precio, Agregar, denegacion). Sin verde
+ * produce (retirado con el rebrand). Tipografia system-stack (C-OFFLINE).
+ */
 
 :root {
+	/* Primario grafito — el chrome urbano de las apps de delivery */
+	--grafito: #1a1a1a;
+	--grafito-osc: #000000;
+	--grafito-soft: #2a2a2a;
 
-	--color-bg: #f5f5f5;
-	--color-card: #ffffff;
-	--color-text: #333333;
-	--color-text-muted: #666666;
-	--color-text-soft: #888888;
-	--color-accent: #ff4411;
-	--color-accent-hover: #e63e0f;
-	--color-accent-soft: rgba(255, 68, 17, 0.1);
-	--color-error: #cc0000;
-	--color-error-bg: #fff0f0;
-	--color-error-border: #ffcccc;
-	--color-success: #006600;
-	--color-success-bg: #f0fff4;
-	--color-success-border: #cce8cc;
-	--color-info: #0066cc;
-	--color-info-bg: #e8f4ff;
-	--color-border: #cccccc;
-	--color-border-light: #eeeeee;
-	--color-shadow: rgba(0, 0, 0, 0.08);
-	--color-shadow-hover: rgba(0, 0, 0, 0.12);
+	/* Rojo — SEMANTICO: precio, Agregar, denegacion. Nunca decorativo. */
+	--rojo: #ee3124;
+	--rojo-osc: #c41c11;
+	--rojo-claro: #feeae8;
 
-	--space-xs: 0.35rem;
-	--space-sm: 0.5rem;
-	--space-md: 1rem;
-	--space-lg: 1.5rem;
-	--space-xl: 2rem;
-	--space-2xl: 2.5rem;
+	/* Acento rating (estrellas) — mostaza, solo para valoraciones */
+	--rating: #f5a623;
 
-	--radius-sm: 6px;
-	--radius-md: 8px;
-	--shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
-	--shadow-md: 0 2px 12px var(--color-shadow);
-	--shadow-lg: 0 4px 12px var(--color-shadow-hover);
+	/* Neutrales */
+	--papel: #f6f6f7;
+	--tarjeta: #ffffff;
+	--tinta: #1a1a1a;
+	--tinta-suave: #5b5b5b;
+	--tinta-tenue: #8e8e8e;
+	--linea: #e8e8e8;
+	--gris-claro: #f0f0f1;
+	--blanco: #ffffff;
 
-	--font-stack: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-	--font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
-	--font-size-xs: 0.75rem;
-	--font-size-sm: 0.85rem;
-	--font-size-base: 0.95rem;
-	--font-size-lg: 1.1rem;
-	--font-size-xl: 1.5rem;
-	--font-size-2xl: 2rem;
-	--font-size-hero: 3.5rem;
+	/* Radios */
+	--radio: 14px;
+	--radio-sm: 8px;
+	--radio-pill: 999px;
 
-	--container-max: 720px;
-	--form-max: 400px;
+	/* Espaciado */
+	--sp-1: 0.25rem;
+	--sp-2: 0.5rem;
+	--sp-3: 0.75rem;
+	--sp-4: 1rem;
+	--sp-5: 1.5rem;
+	--sp-6: 2rem;
+	--sp-7: 3rem;
+	--sp-8: 4rem;
+
+	/* Tipografia (system-stack, offline) */
+	--font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	--font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	--fs-xs: 0.8rem;
+	--fs-sm: 0.9rem;
+	--fs-base: 1rem;
+	--fs-lg: 1.2rem;
+	--fs-xl: 1.6rem;
+	--fs-2xl: 2.4rem;
+	--fs-3xl: 3.1rem;
+
+	/* Layout */
+	--ancho: 1080px;
+	--ancho-angosto: 460px;
+
+	/* Sombra (offset + blur, no halo) */
+	--sombra-1: 0 1px 2px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.04);
+	--sombra-2: 0 6px 18px rgba(0, 0, 0, 0.10), 0 2px 6px rgba(0, 0, 0, 0.06);
 }
-
-
 
 * {
 	margin: 0;
@@ -59,46 +70,51 @@
 	box-sizing: border-box;
 }
 
-
 html {
 	font-size: 16px;
+	-webkit-text-size-adjust: 100%;
 }
 
 body {
-	font-family: var(--font-stack);
-	background-color: var(--color-bg);
-	color: var(--color-text);
-	font-size: var(--font-size-base);
-	line-height: 1.5;
+	font-family: var(--font);
+	background: var(--papel);
+	color: var(--tinta);
+	font-size: var(--fs-base);
+	line-height: 1.55;
 	min-height: 100vh;
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	font-synthesis: none;
 }
 
 h1, h2, h3, h4 {
-	color: #111111;
-	line-height: 1.3;
+	color: var(--tinta);
+	line-height: 1.15;
+	font-weight: 700;
+	letter-spacing: -0.02em;
 }
 
 a {
-	color: var(--color-accent);
+	color: var(--rojo);
 	text-decoration: none;
 }
 
 a:hover {
-	color: var(--color-accent-hover);
+	color: var(--rojo-osc);
 	text-decoration: underline;
 }
 
-code, pre {
-	font-family: var(--font-mono);
-	font-size: 0.9em;
+button {
+	font-family: inherit;
 }
 
+input {
+	font-family: inherit;
+}
 
-
+:focus-visible {
+	outline: 3px solid var(--rojo);
+	outline-offset: 2px;
+	border-radius: 4px;
+}
 
 .sr-only {
 	position: absolute;
@@ -110,4 +126,16 @@ code, pre {
 	clip: rect(0, 0, 0, 0);
 	white-space: nowrap;
 	border: 0;
+}
+
+.envoltura {
+	max-width: var(--ancho);
+	margin: 0 auto;
+	padding: 0 var(--sp-5);
+}
+
+.envoltura-angosta {
+	max-width: var(--ancho-angosto);
+	margin: 0 auto;
+	padding: 0 var(--sp-5);
 }
