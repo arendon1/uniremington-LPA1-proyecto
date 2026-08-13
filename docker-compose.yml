@@ -1,0 +1,42 @@
+# Stack de infraestructura de RappiClon (U3): PostgreSQL 17 + Mailpit
+#
+# Levanta la base de datos y el buzón local de correos que la aplicación
+# espera en localhost. Un solo comando replica el entorno completo:
+#
+#   docker compose up -d
+#
+# - PostgreSQL: localhost:5432 (db rappiclon, usuario rappi / rappi123)
+# - Mailpit:    SMTP localhost:1025 · UI http://localhost:8025
+#
+# Después: ./mvnw spring-boot:run (API :8080) y
+#          cd frontend && npm install && npm run dev (SPA :5173)
+
+services:
+  postgres:
+    image: postgres:17
+    container_name: rappi-postgres
+    environment:
+      POSTGRES_DB: rappiclon
+      POSTGRES_USER: rappi
+      POSTGRES_PASSWORD: rappi123
+    ports:
+      - "5432:5432"
+    volumes:
+      - rappi-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rappi -d rappiclon"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: rappi-mailpit
+    ports:
+      - "1025:1025"   # SMTP (lo usa la API)
+      - "8025:8025"   # UI web del buzón
+    depends_on:
+      - postgres
+
+volumes:
+  rappi-postgres-data:

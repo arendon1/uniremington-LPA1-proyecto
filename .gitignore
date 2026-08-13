@@ -82,8 +82,13 @@ reset-links.log
 *.bak-prefill
 
 # --- Node / npm (tooling local, no se publica) ---
+# La SPA frontend/ SI versiona su package.json (necesario para npm install).
 package.json
 package-lock.json
+!frontend/package.json
+!frontend/package-lock.json
+!e2e/package.json
+!e2e/package-lock.json
 
 # --- Material local del agente (NO se commitea) ---
 # Razón: estos directorios son artefactos del agente. El repo público se
@@ -95,3 +100,5 @@ package-lock.json
 .pi/
 skills-lock.json
 AGENTS.md
+*.aiff
+audio/
